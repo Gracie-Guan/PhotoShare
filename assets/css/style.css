@@ -1,0 +1,61 @@
+
+
+.logo {
+  width: 100px;
+  margin-left: 50px;
+}
+
+.random-image-box img {
+  width: 100%;
+  width: 100%;
+  object-fit:cover;
+}
+
+.registerbtn {
+  margin: auto;
+}
+.registerbox {
+  width: 500px;
+}
+
+.nav{
+  margin-right: 50px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 20px;
+  margin: 50px;
+  justify-items: center;
+}
+
+.upload {
+  width: 600px;
+}
+
+.upload-form{
+  gap:20px;
+  align-items: center;
+}
+
+.images {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-image {
+  width: 100%;
+  margin: auto;
+}
+
+.btg {
+  margin: auto 150px 10px 150px;
+}
+
+
+.imagebox {
+  width: 1000px;
+}

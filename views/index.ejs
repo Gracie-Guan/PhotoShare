@@ -1,11 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <title>PicPiq - Share Your Moments</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <h1>dummy test</h1>
+    <header >
+      <img src="/img/PicPiq.png" alt="PicPiq website Logo" class="logo">
+    </header>
+
+    <main class="d-flex container">
+        <section class="login-register container d-flex flex-column align-content-center">
+          <div class="d-flex flex-column justify-content-center mx-auto p-2">          
+            <h1 class="text-primary-emphasis">Welcome</h1>
+            <p class="text-primary-emphasis">Login to share your moment</p>
+          </div> 
+
+          <div class="d-flex justify-content-center">
+            <%- include('partials/login') %>
+            <% if (messages.error) { %>
+              <div class="error">
+                  <%= messages.error %>
+              </div>
+              <% } %>
+
+            <% if (messages.success) { %>
+               <div class="success">
+                    <%= messages.success %>
+               </div>
+               <% } %>
+          </div>
+
+          <div class="registerbtn"> 
+            <p class="mt-3 text-secondary">Don't have an account yet?</p>
+            <a class="btn btn-outline-dark" href="/register">Register</a>
+          </div>
+        </section>
+
+        <section class="image-container container-lg" >
+          <div class="random-image-box" >
+            <% if (randomImage) { %>
+
+                   <img src="/uploads/<%= randomImage %>" alt="Today's Image" class="random-image">
+                   <p class="mt-3 text-secondary">Moment of Today</p>
+                  </div>
+
+            <% } else { %>
+              <p>No images available.</p>
+            <% } %>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

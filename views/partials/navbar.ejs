@@ -1,0 +1,18 @@
+<div class="d-sm-flex justify-content-between align-items-center nav">
+  <div>
+      <a href="/">      
+        <img src="/img/PicPiq.png" class="logo" alt="PicPiq website Logo">
+    </a>
+  </div>
+  <div>
+    <% if (user) { %>
+          <span class="text-primary"><%= user.name %></span>
+      <% } else { %>
+          <a href="/">Login</a>
+          <a href="/register">Register</a>
+      <% } %>
+
+
+      <a class="ms-3 btn btn-outline-secondary" href="/gallery">Gallery</a>
+  </div>
+</div>

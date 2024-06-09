@@ -1,18 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Upload an Image</title>
-</head>
-<body>
-  <form action="/upload" method="post" enctype="multipart/form-data">
-    <h3>Upload an Image</h3>
-    <label for="caption">Image Description</label>
-    <input type="text" id="caption" name="caption" required><br>
-    <label for="image">Choose an image:</label>
-    <input type="file" id="image" name="image" accept="image/*" required><br>
-    <input type="submit" value="Upload">
-  </form>
-</body>
-</html>
+<form class="d-flex flex-column upload-form" action="/upload" method="post" enctype="multipart/form-data">
+  <h3 class="text-light mt-3">Upload an Image</h3>
+  <div class="d-flex flex-column gap-3">
+    <div class="input-group">
+      <input type="file" class="form-control" id="inputGroupFile04" name="image" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required>
+    </div>
+    <div class="input-group">
+      <span class="input-group-text">Caption</span>
+      <textarea class="form-control" name="caption" aria-label="image caption" placeholder="Tell me about this image..." required></textarea>
+    </div>
+  </div>
+  <div>
+    <button class="mb-3 btn btn-light" type="submit" value="Upload">Submit</button>
+  </div>
+</form>

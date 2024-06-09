@@ -1,9 +1,27 @@
-<form action="/partials/login" method="POST">
-  <label for="userId">User ID:</label>
-  <input type="text" id="userId" name="user_id" required>
+<form class="mx-auto p-2" action="/partials/login" method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <labe class="form-label" for="user_name">User name</label>
+      <input class="form-control" type="text" id="userName" name="user_name" placeholder="Your username" required>
+  </div>
 
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="user_password" required>
+<div class="mb-3">  
+  <label class="form-label " for="password">Password</label>
+  <input class="form-control" type="password" id="password" name="user_password" placeholder="Your password" required>
+</div>
 
-  <button type="submit">Login</button>
+<button class="btn btn-dark" type="submit">Login</button>
+
+  
 </form>
+
+<% if (messages.error) { %>
+  <div class="error">
+    <%= messages.error %>
+  </div>
+<% } %>
+
+  <% if (messages.success) { %>
+      <div class="success">
+        <%= messages.success %>
+      </div>
+  <% } %>

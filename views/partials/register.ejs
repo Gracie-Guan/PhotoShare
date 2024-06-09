@@ -1,7 +1,24 @@
-<form action="/register" method="POST">
-  <input type="text" name="user_name" placeholder="Name" required>
-  <input type="email" name="user_email" placeholder="Email" required>
-  <input type="password" name="user_password" placeholder="Password" required>
-  <input type="text" name="user_bio" placeholder="Bio">
-  <button type="submit">Register</button>
+<form class="" action="/register" method="POST">
+  <div class="mb-3">  
+    <labe class="form-label" for="user_name">User name</label>
+    <input class="form-control" type="text" name="user_name" placeholder="Name" required>
+  </div>
+
+  <div class="mb-3">
+    <labe class="form-label" for="user_email">Email</label>
+      <input class="form-control" type="email" name="user_email" placeholder="Email" required>
+  </div>
+
+  <div class="mb-3">  
+    <labe class="form-label" for="user_password">Password</label>
+    <input class="form-control" type="password" name="user_password" placeholder="Password" required>
+  </div>
+
+  <div class="mb-3">  
+    <labe class="form-label" for="user_bio">Bio</label>
+    <input class="form-control" type="text" name="user_bio" placeholder="Bio">
+  </div>
+
+  <button class="btn btn-dark" type="submit">Register</button>
 </form>
+

@@ -23,9 +23,6 @@ router
   })
 
 router.param('id',(req,res,next,id)=>{
-
-  //...///
-
   next();
 })
 
