@@ -68,7 +68,8 @@ app.use('/route/users', userRouter);
 
 // User login 
 app.get("/partials/login",(req,res)=>{
-  res.render("partials/login", { message:req.flash()});
+  const messages = req.flash();
+  res.render("partials/login", { messages});
 });
 
 app.post("/partials/login", async(req, res) => {
@@ -84,7 +85,7 @@ app.post("/partials/login", async(req, res) => {
               return res.redirect('/');
           }
           if (dbResults.length === 0) {
-              req.flash('error', 'Invalid username or password');
+              req.flash('error', 'Invalid username');
               return res.redirect('/');
           }
           const hashedPassword = dbResults[0].user_password;
@@ -92,12 +93,12 @@ app.post("/partials/login", async(req, res) => {
 
           const passwordMatch = await bcrypt.compare(user_password, hashedPassword);
           if (!passwordMatch) {
-              req.flash('error', 'Invalid username or password');
+              req.flash('error', 'Invalid password');
               return res.redirect('/');
           }
-          req.session.user = { id: user.user_id, name: user_name };
 
-        req.session.save(err => {
+          req.session.user = { id: user.user_id, name: user_name };
+          req.session.save(err => {
             if (err) {
                 console.log('Session save error:', err);
                 return res.status(500).send('Error saving session.');
@@ -127,9 +128,9 @@ app.post("/register", async(req, res) => {
     const [existingUser] = await connection.promise().execute(checkUserQuery, [user_name]);
     if (existingUser.length>0) {
       req.flash("error","Username already exist, please choose a different one");
-      return res.redirect("/register");
+      return res.redirect('/register');
     }
-    
+
   const hashedPassword = await bcrypt.hash(user_password, 10);
   const newUserQuery = "INSERT INTO users (user_name, user_bio, user_email, user_password) VALUES (?, ?, ?, ?)";
   connection.query(
@@ -138,7 +139,7 @@ app.post("/register", async(req, res) => {
       (dbErr, dbResults) => {
         if (dbErr) {
             req.flash('error','Error logging in');
-            return res.redirect("pages/register_page");
+            return res.redirect('/register');
           } else {
               console.log("User created successfully:", dbResults);
               req.flash('success','User created successfully, please login your new account')
@@ -148,7 +149,7 @@ app.post("/register", async(req, res) => {
   } catch (error) {
     console.log('Error hashing password:', error);
     req.flash('error','Error creating new user, please try again.')
-    return res.redirect('pages/register_page');
+    return res.redirect('/register');
   }});
 
 // User upload images
@@ -156,7 +157,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'assets/uploads')));
 
 app.get("/partials/upload-image", (req,res) =>{
   return res.render("partials/upload-image",{
-    user: req.session.user
+    user: req.session.user,
+    messages: req.flash()
   });
 })
 
@@ -164,11 +166,15 @@ app.post('/upload',async (req,res)=> {
   console.log("uploading image");
 
   if (!req.session || !req.session.user) {
-    return res.status(401).send('You must be logged in to upload images.');
+    req.flash('error','You must be logged in to upload images.');
+    console.log(req.flash('error'));
+    return res.redirect("/gallery");
   }
 
   if (!req.files || !req.files.image) {
-    return res.status(400).send('No file uploaded.');
+    req.flash('error','No file uploaded.');
+    console.log(req.flash('error'));
+    return res.redirect('/gallery');
 }
   const user_id = req.session.user.id;
   const caption = req.body.caption;
@@ -177,8 +183,8 @@ app.post('/upload',async (req,res)=> {
   const validTypes = ['.jpg', '.jpeg', '.gif', '.png', '.bmp'];
     const fileType = path.extname(uploadedFile.name).toLowerCase();
     if (!validTypes.includes(fileType)) {
-        req.flash('error', 'Invalid file type. Only JPG, GIF, PNG, BMP files are allowed.');
-        alert("Invalid file type. Only JPG, GIF, PNG, BMP files are allowed.");
+        req.flash('error','Invalid file type. Only JPG, GIF, PNG, BMP files are allowed.');
+        console.log(req.flash('error'));
         return res.redirect('/gallery');
     }
 
@@ -186,7 +192,7 @@ app.post('/upload',async (req,res)=> {
     const maxSize = 5 * 1024 * 1024; 
     if (uploadedFile.size > maxSize) {
         req.flash('error', 'File size exceeds the limit of 5MB.');
-        alert("File size exceeds the limit of 5MB.");
+        console.log(req.flash('error'));
         return res.redirect('/gallery');
     } 
   
@@ -211,10 +217,12 @@ app.post('/upload',async (req,res)=> {
       const [result] = await connection.promise().execute(query, [user_id, `/uploads/${newFileName}`, caption]);
       console.log('Image data inserted with ID:', result.insertId);
       req.flash('success', 'Image uploaded successfully!');
+      console.log(req.flash('success'));
       res.redirect("/gallery");
   } catch (error) {
       console.error('Database insertion error:', error);
       req.flash('error', 'Your image upload failed, please try again.');
+      console.log(req.flash('error'));
       res.redirect("/gallery");
   }
   });
@@ -242,16 +250,21 @@ app.get('/gallery', async (req, res) => {
     `;
     const [images] = await connection.promise().execute(query);
 
+    const messages = req.flash();
+    console.log(messages); 
+
     res.render('pages/gallery', { 
-      user: req.session.user, 
-      images 
+      user: req.session.user,
+      images: images,
+      messages: messages
     });
   } catch (error) {
     console.error('Failed to fetch images:', error);
     req.flash('error', 'An error occurred while retrieving the images.');
-    res.redirect('/');
+    res.redirect('/gallery');
   }
 });
+
 
 // view image detail
 app.get('/image/:image_id', async (req, res) => {
@@ -293,7 +306,7 @@ app.get('/', (req, res) => {
       const images = files.filter(file => file.endsWith('.jpg') || file.endsWith('.png'));
       const randomImage = images[Math.floor(Math.random() * images.length)];
       
-      res.render('index', { randomImage: randomImage });
+      res.render('index', { randomImage: randomImage,});
     }
   });
 });

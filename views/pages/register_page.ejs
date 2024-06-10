@@ -16,11 +16,27 @@
     <main class="registerbox container">
       <a class="btn btn-sm btn-outline-secondary" href="/" id="back-button ">Back</a>
 
-        <section class="register mt-3 ">
-            <h1 class="mt-4 mb-3">Join PicPiq</h1>
+      <% if (messages.error && messages.error.length > 0) { %>
+        <div class="alert alert-danger">
+          <% messages.error.forEach(function(message) { %>
+            <p><%= message %></p>
+          <% }) %>
+        </div>
+      <% } %>
 
-            <%- include('../partials/register.ejs') %>
-        </section>
+      <% if (messages.success && messages.success.length > 0) { %>
+        <div class="alert alert-success">
+          <% messages.success.forEach(function(message) { %>
+            <p><%= message %></p>
+          <% }) %>
+        </div>
+      <% } %>
+
+      <section class="register mt-3 ">
+          <h1 class="mt-4 mb-3">Join PicPiq</h1>
+
+          <%- include('../partials/register.ejs') %>
+      </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
